@@ -110,13 +110,13 @@ def make_prediction(lat, long):
     params = []
     for day in weather_data:
         params.append(make_params(
-          this.getAvg("temp", day),
-          temp_hum_to_dew(f_to_c(this.getAvg("temp", day)), this.getAvg("humidity", day)),
-          this.getAvg("humidity", day),
+          getAvg("temp", day),
+          temp_hum_to_dew(f_to_c(getAvg("temp", day)), getAvg("humidity", day)),
+          getAvg("humidity", day),
           day['precipitation_accumulation'].value,
-          this.getAvg("baro_pressure", day),
-          this.getAvg("wind_speed", day),
-          this.getAvg("visibility", day),
+          getAvg("baro_pressure", day),
+          getAvg("wind_speed", day),
+          getAvg("visibility", day),
           day['weather_code'].value))
 
     # make predict call
