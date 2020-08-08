@@ -132,7 +132,7 @@ def predict():
         return make_prediction(args['lat'], args['long'])
 
 
-@qpp.route("/addlocation", methods=['POST'])
+@app.route("/addlocation", methods=['POST'])
 def add_location():
     if 'json_args' in request.form:
         args = pd.read_json(request.form['json_args'])
