@@ -28,7 +28,7 @@ def c_to_f(t):
 
 # uses C degrees and percent
 def temp_hum_to_dew(temp, humidity):
-    return (Math.pow((humidity/100), 0.125) * (112 + (0.9 * temp))) + (0.1 * temp) - 112
+    return (pow((humidity/100), 0.125) * (112 + (0.9 * temp))) + (0.1 * temp) - 112
 
 
 def code_to_value(code, to_compare):
