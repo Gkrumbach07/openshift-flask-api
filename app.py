@@ -97,9 +97,9 @@ def make_prediction(lat, long):
     "lon":long,
     "unit_system":"us",
     "start_time":"now",
-    "fields":"precipitation,precipitation_accumulation,temp,\
-     wind_speed,baro_pressure,visibility,humidity,weather_code"
-    "apikey":"9HaH9EKcMl4ANqi3eBna6kH58fybWmTu"}
+    "fields":"precipitation,precipitation_accumulation,temp,wind_speed,baro_pressure,visibility,humidity,weather_code",
+    "apikey":"9HaH9EKcMl4ANqi3eBna6kH58fybWmTu"
+    }
 
     response = requests.request("GET", url, params=querystring)
 
