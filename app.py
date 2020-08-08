@@ -4,6 +4,7 @@ import json
 import pandas as pd
 from flask_cors import CORS
 from urllib.parse import urlencode
+import requests
 
 
 app = Flask(__name__)
