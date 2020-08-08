@@ -39,7 +39,7 @@ def code_to_value(code, to_compare):
 
 
 def getAvg(key, obj):
-    return ((obj[key][0]['min'].value + obj[key][1]['max'].value) / 2)
+    return ((obj[key][0]['min']['value'] + obj[key][1]['max']['value']) / 2)
 
 
 def make_params(temperature, dew_point, relative_humidity, daily_precipitation,
@@ -113,11 +113,11 @@ def make_prediction(lat, long):
           getAvg("temp", day),
           temp_hum_to_dew(f_to_c(getAvg("temp", day)), getAvg("humidity", day)),
           getAvg("humidity", day),
-          day['precipitation_accumulation'].value,
+          day['precipitation_accumulation']['value'],
           getAvg("baro_pressure", day),
           getAvg("wind_speed", day),
           getAvg("visibility", day),
-          day['weather_code'].value))
+          day['weather_code']['value']))
 
     # make predict call
     return {
