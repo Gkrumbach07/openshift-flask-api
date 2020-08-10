@@ -136,7 +136,7 @@ def predict():
 @app.route("/addlocation", methods=['POST'])
 def add_location():
     if 'json_args' in request.form:
-        args = pd.read_json(request.form['json_args'])
+        args = json.loads(request.form['json_args'])
         with open('database.json', "r+") as json_file:
             data = json.load(json_file)
             data['locations'].append({
