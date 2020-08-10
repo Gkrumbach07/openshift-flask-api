@@ -40,7 +40,7 @@ def add_location():
             json_file.seek(0)
             json.dump(data, json_file)
 
-            return datat
+            return data
 
 
 @app.route("/tracked")
