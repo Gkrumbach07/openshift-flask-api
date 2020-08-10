@@ -147,6 +147,8 @@ def add_location():
             json_file.seek(0)
             json.dump(data, json_file)
 
+            return data
+
 
 if __name__ == "__main__":
     app.run(host="0.0.0.0", port=8080)
