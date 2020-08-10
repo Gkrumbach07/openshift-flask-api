@@ -40,7 +40,7 @@ def add_location():
             json_file.seek(0)
             json.dump(data, json_file)
 
-            return data
+            return datat
 
 
 @app.route("/tracked")
@@ -56,7 +56,7 @@ def getTracked():
                 "start_day": datetime.today().strftime('%Y-%m-%d'),
                 "solar": make_prediction(loc['lat'], loc['long'])
              })
-         return out
+        return out
 
 
 def f_to_c(t):
