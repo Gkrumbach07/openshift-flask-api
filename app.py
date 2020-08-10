@@ -6,12 +6,15 @@ from flask_cors import CORS
 from urllib.parse import urlencode
 import requests
 from datetime import datetime
+import logging
 
 
 app = Flask(__name__)
 CORS(app)
 
 DEFAULT_BASE_URL = "http://solarforecaster:8080/%s"
+
+logging.basicConfig(level=logging.INFO)
 
 
 @app.route("/")
@@ -146,7 +149,7 @@ def make_prediction(lat, long):
     response = requests.request("GET", url, params=querystring)
 
     weather_data = json.loads(response.text)
-    print(weather_data)
+    logging.info(weather_data)
 
     # grab solar predictions based on forecast
     params = []
