@@ -54,7 +54,7 @@ def getTracked():
                 "lat": loc["lat"],
                 "long": loc["long"],
                 "start_day": datetime.today().strftime('%Y-%m-%d'),
-                "solar": make_prediction(loc['lat'], loc['long'])
+                "solar": make_prediction(loc['lat'], loc['long'])["solar"]
              })
         return out
 
