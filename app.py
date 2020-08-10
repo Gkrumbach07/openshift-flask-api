@@ -5,6 +5,7 @@ import pandas as pd
 from flask_cors import CORS
 from urllib.parse import urlencode
 import requests
+from datetime import datetime
 
 
 app = Flask(__name__)
@@ -16,6 +17,46 @@ DEFAULT_BASE_URL = "http://solarforecaster:8080/%s"
 @app.route("/")
 def main():
     return "API Root"
+
+
+@app.route("/predict", methods=['POST'])
+def predict():
+    if 'json_args' in request.form:
+        args = pd.read_json(request.form['json_args'])
+        return make_prediction(args['lat'], args['long'])
+
+
+@app.route("/addlocation", methods=['POST'])
+def add_location():
+    if 'json_args' in request.form:
+        args = json.loads(request.form['json_args'])
+        with open('database.json', "r+") as json_file:
+            data = json.load(json_file)
+            data['locations'].append({
+                "id": len(data['locations']) + 1,
+                "lat": args["lat"],
+                "long": args["long"]
+            })
+            json_file.seek(0)
+            json.dump(data, json_file)
+
+            return data
+
+
+@app.route("/tracked")
+def getTracked():
+    with open('database.json') as json_file:
+        data = json.load(json_file)
+        out = {"locations": []}
+        for loc in data['locations']:
+             out['locations'].append({
+                "id": loc['id'],
+                "lat": loc["lat"],
+                "long": loc["long"],
+                "start_day": datetime.today().strftime('%Y-%m-%d'),
+                "solar": make_prediction(loc['lat'], loc['long'])
+             })
+         return out
 
 
 def f_to_c(t):
@@ -124,30 +165,6 @@ def make_prediction(lat, long):
     "weather": weather_data,
     "solar": score_text(params)
     }
-
-
-@app.route("/predict", methods=['POST'])
-def predict():
-    if 'json_args' in request.form:
-        args = pd.read_json(request.form['json_args'])
-        return make_prediction(args['lat'], args['long'])
-
-
-@app.route("/addlocation", methods=['POST'])
-def add_location():
-    if 'json_args' in request.form:
-        args = json.loads(request.form['json_args'])
-        with open('database.json', "r+") as json_file:
-            data = json.load(json_file)
-            data['locations'].append({
-                "id": len(data['locations']) + 1,
-                "lat": args["lat"],
-                "long": args["long"]
-            })
-            json_file.seek(0)
-            json.dump(data, json_file)
-
-            return data
 
 
 if __name__ == "__main__":
