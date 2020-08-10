@@ -146,6 +146,7 @@ def make_prediction(lat, long):
     response = requests.request("GET", url, params=querystring)
 
     weather_data = json.loads(response.text)
+    print(weather_data)
 
     # grab solar predictions based on forecast
     params = []
