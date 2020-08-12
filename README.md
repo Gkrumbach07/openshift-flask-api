@@ -7,3 +7,11 @@ The first api is a model service in which you can make predictions off of a mode
 
 ## Weather API
 This is a third party api serice named ClimaCell. You can sign up fro free at https://www.climacell.co/pricing/. You will need to find your api key to be able to use this backend service.
+
+## Deployment
+To run this on Openshift you can run this command in the CLI terminal.
+```
+oc new-app centos/python-35-centos7~https://github.com/Gkrumbach07/openshift-flask-api.git \
+  -e API_KEY=INSERT_API_KEY \
+  --name=backend
+```
