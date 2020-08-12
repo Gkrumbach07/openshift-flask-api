@@ -6,6 +6,7 @@ from flask_cors import CORS
 from urllib.parse import urlencode
 import requests
 from datetime import datetime
+import argparse
 
 
 app = Flask(__name__)
@@ -43,6 +44,7 @@ def add_location():
             return data
 
 
+
 @app.route("/tracked")
 def getTracked():
     with open('database.json') as json_file:
@@ -57,6 +59,16 @@ def getTracked():
                 "solar": make_prediction(loc['lat'], loc['long'])["solar"]
              })
         return out
+
+
+def get_arg(env, default):
+    return os.getenv(env) if os.getenv(env, '') is not '' else default
+
+
+def parse_args(parser):
+    args = parser.parse_args()
+    args.apikey = get_arg('API_KEY', args.apikey)
+    return args
 
 
 def f_to_c(t):
@@ -168,4 +180,11 @@ def make_prediction(lat, long):
 
 
 if __name__ == "__main__":
+    parser = argparse.ArgumentParser(
+            description='backend service')
+    parser.add_argument(
+            '--apikey',
+            help='ClimaCell api key, env variable API_KEY',
+            default='0000')
+    args = parse_args(parser)
     app.run(host="0.0.0.0", port=8080)
