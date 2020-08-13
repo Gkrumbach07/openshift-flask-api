@@ -21,7 +21,7 @@ def main():
 def predict():
     if 'json_args' in request.form:
         args = json.loads(request.form['json_args'])
-        return make_prediction(args['lat'], args['long'])
+        return make_prediction(args.lat, args.long)
 
 
 @app.route("/addlocation", methods=['POST'])
