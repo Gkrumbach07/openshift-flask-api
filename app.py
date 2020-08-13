@@ -1,7 +1,6 @@
 import os
 from flask import Flask, request
 import json
-import pandas as pd
 from flask_cors import CORS
 from urllib.parse import urlencode
 import requests
@@ -21,7 +20,7 @@ def main():
 @app.route("/predict", methods=['POST'])
 def predict():
     if 'json_args' in request.form:
-        args = pd.read_json(request.form['json_args'])
+        args = JSON.loads(request.form['json_args'])
         return make_prediction(args['lat'], args['long'])
 
 
