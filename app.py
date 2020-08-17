@@ -1,20 +1,15 @@
 import os
 from flask import Flask, request
 import json
-import pandas as pd
 from flask_cors import CORS
 from urllib.parse import urlencode
 import requests
 from datetime import datetime
-import logging
+import argparse
 
 
 app = Flask(__name__)
 CORS(app)
-
-DEFAULT_BASE_URL = "http://model-forecaster.apps.testcluster123.lab.upshift.rdu2.redhat.com/%s"
-
-logging.basicConfig(level=logging.INFO)
 
 
 @app.route("/")
@@ -25,7 +20,7 @@ def main():
 @app.route("/predict", methods=['POST'])
 def predict():
     if 'json_args' in request.form:
-        args = pd.read_json(request.form['json_args'])
+        args = json.loads(request.form['json_args'])[0]
         return make_prediction(args['lat'], args['long'])
 
 
@@ -46,6 +41,7 @@ def add_location():
             return data
 
 
+
 @app.route("/tracked")
 def getTracked():
     with open('database.json') as json_file:
@@ -60,6 +56,17 @@ def getTracked():
                 "solar": make_prediction(loc['lat'], loc['long'])["solar"]
              })
         return out
+
+
+def get_arg(env, default):
+    return os.getenv(env) if os.getenv(env, '') is not '' else default
+
+
+def parse_args(parser):
+    args = parser.parse_args()
+    args.apikey = get_arg('API_KEY', args.apikey)
+    args.url = get_arg('REACT_APP_MODEL_URL', args.url)
+    return args
 
 
 def f_to_c(t):
@@ -125,12 +132,13 @@ def make_params(temperature, dew_point, relative_humidity, daily_precipitation,
 
 
 def score_text(text, url = None):
-    url = (url or (DEFAULT_BASE_URL % "predict"))
+    url = args.url + "/predict"
     if type(text) == str:
         text = [text]
     payload = urlencode({"json_args" : json.dumps(text)})
     headers = {'content-type': 'application/x-www-form-urlencoded'}
     response = requests.request("POST", url, data=payload, headers=headers)
+    print(response.text)
     return json.loads(response.text)
 
 
@@ -143,13 +151,12 @@ def make_prediction(lat, long):
     "unit_system":"us",
     "start_time":"now",
     "fields":"precipitation,precipitation_accumulation,temp,wind_speed,baro_pressure,visibility,humidity,weather_code",
-    "apikey":"9HaH9EKcMl4ANqi3eBna6kH58fybWmTu"
+    "apikey": args.apikey
     }
 
     response = requests.request("GET", url, params=querystring)
 
     weather_data = json.loads(response.text)
-    logging.info(weather_data)
 
     # grab solar predictions based on forecast
     params = []
@@ -172,4 +179,15 @@ def make_prediction(lat, long):
 
 
 if __name__ == "__main__":
+    parser = argparse.ArgumentParser(
+            description='backend service')
+    parser.add_argument(
+            '--apikey',
+            help='ClimaCell api key, env variable API_KEY',
+            default='0000')
+    parser.add_argument(
+            '--url',
+            help='model base url, env variable REACT_APP_MODEL_URL',
+            default='http://solarforecaster:8080')
+    args = parse_args(parser)
     app.run(host="0.0.0.0", port=8080)
