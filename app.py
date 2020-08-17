@@ -138,6 +138,7 @@ def score_text(text, url = None):
     payload = urlencode({"json_args" : json.dumps(text)})
     headers = {'content-type': 'application/x-www-form-urlencoded'}
     response = requests.request("POST", url, data=payload, headers=headers)
+    print(response.text)
     return json.loads(response.text)
 
 
