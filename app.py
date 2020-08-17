@@ -6,6 +6,8 @@ from urllib.parse import urlencode
 import requests
 from datetime import datetime
 import argparse
+import pandas as pd
+
 
 
 app = Flask(__name__)
@@ -20,8 +22,8 @@ def main():
 @app.route("/predict", methods=['POST'])
 def predict():
     if 'json_args' in request.form:
-        args = json.loads(request.form['json_args'])
-        return make_prediction(args.lat, args.long)
+        args = pd.read_json(request.form['json_args'])
+        return make_prediction(args['lat'], args['long'])
 
 
 @app.route("/addlocation", methods=['POST'])
