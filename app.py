@@ -6,6 +6,8 @@ from urllib.parse import urlencode
 import requests
 from datetime import datetime
 import argparse
+import pandas as pd
+
 
 
 app = Flask(__name__)
@@ -20,7 +22,7 @@ def main():
 @app.route("/predict", methods=['POST'])
 def predict():
     if 'json_args' in request.form:
-        args = json.loads(request.form['json_args'])[0]
+        args = pd.read_json(request.form['json_args'])
         return make_prediction(args['lat'], args['long'])
 
 
@@ -138,7 +140,6 @@ def score_text(text, url = None):
     payload = urlencode({"json_args" : json.dumps(text)})
     headers = {'content-type': 'application/x-www-form-urlencoded'}
     response = requests.request("POST", url, data=payload, headers=headers)
-    print(response.text)
     return json.loads(response.text)
 
 
