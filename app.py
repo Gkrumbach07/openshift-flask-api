@@ -132,7 +132,9 @@ def make_params(temperature, dew_point, relative_humidity, daily_precipitation,
 
 
 def score_text(text, url = None):
-    url = args.url + "/predict"
+    # url = args.url + "/predict"
+    DEFAULT_BASE_URL = "http://model-forecaster.apps.testcluster123.lab.upshift.rdu2.redhat.com/%s"
+    url = (url or (DEFAULT_BASE_URL % "predict"))
     if type(text) == str:
         text = [text]
     payload = urlencode({"json_args" : json.dumps(text)})
