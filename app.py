@@ -21,7 +21,6 @@ def main():
 def predict():
     if 'json_args' in request.form:
         args = json.loads(request.form['json_args'][0])
-        print(args)
         return make_prediction(args['lat'], args['long'])
 
 
