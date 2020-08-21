@@ -92,6 +92,7 @@ def code_to_value(code, to_compare):
 
 
 def getAvg(key, obj):
+    print(obj)
     return ((obj[key][0]['min']['value'] + obj[key][1]['max']['value']) / 2)
 
 
