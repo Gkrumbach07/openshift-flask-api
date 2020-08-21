@@ -11,7 +11,10 @@ This is a third party api serice named ClimaCell. You can sign up fro free at ht
 ## Deployment
 To run this on Openshift you can run this command in the CLI terminal.
 ```
-oc new-app centos/python-35-centos7~https://github.com/Gkrumbach07/openshift-flask-api.git \
-  -e API_KEY=INSERT_API_KEY \
-  --name=backend
+oc new-app centos/python-36-centos7~https://github.com/Gkrumbach07/openshift-flask-api.git \
+	-e API_KEY=D0nTsT3Almyk3y \
+	-e REACT_APP_MODEL_URL=$MODEL_URL \
+	--name=backend
+
+oc expose svc/backend
 ```
