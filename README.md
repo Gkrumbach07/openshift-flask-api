@@ -13,7 +13,8 @@ oc new-app quay.io/gkrumbach07/nachless:latest-6~https://github.com/Gkrumbach07/
 
 oc expose svc/model
 ```
-Next take note of the model url that you just exposed. You can get this address by using the `oc get` command. To save the address for later commands, use the coomand bellow.
+Next take note of the model url that you just exposed. You can get this address by using the `oc get` command. To save the address for later commands, use the command bellow.
+
 `MODEL_URL=http://$(oc get route/model -o jsonpath='{.spec.host}')`
 
 ## Weather API
