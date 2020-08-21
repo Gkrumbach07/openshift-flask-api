@@ -92,7 +92,6 @@ def code_to_value(code, to_compare):
 
 
 def getAvg(key, obj):
-    print(obj)
     return ((obj[key][0]['min']['value'] + obj[key][1]['max']['value']) / 2)
 
 
@@ -159,6 +158,7 @@ def make_prediction(lat, long):
     response = requests.request("GET", url, params=querystring)
 
     weather_data = json.loads(response.text)
+    print(weather_data)
 
     # grab solar predictions based on forecast
     params = []
